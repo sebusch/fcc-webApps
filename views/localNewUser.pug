@@ -1,0 +1,13 @@
+//- layout: title, block body
+extends layout
+
+block body
+  .text-center.center-block
+    form(method="post")
+      .form-group
+        label(for="username") User Name
+        input.form-control#username(type="text" placeholder="User Name" required)
+      .form-group
+        label(for="password") Password
+        input.form-control#password(type="password" placeholder="Password" required)
+      button.btn.btn-default(type="submit") Submit

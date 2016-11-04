@@ -1,0 +1,24 @@
+//- layout: title, block body
+//- string array userStories
+//- array examples= [ {heading: "heading title", content: ["part 1","part2"]},]
+//- can fill in block content
+extends layout
+block header
+  include header.pug
+
+block body
+  div.text-center
+    img(src="/img/clementine_150.png")
+    br
+    p Clementine.js mod SEB
+
+  div.text-center
+    p You have clicked the button #[span(id="click-nbr")] times.
+    br
+    .btn-container
+      button.btn.btn-add(type="submit") CLICK ME!
+      button.btn.btn-delete RESET
+
+  script(type="text/javascript", src="/js/ajax-functions.js")
+  script(type="text/javascript", src="/js/clickController.js")
+  script(type="text/javascript", src="/js/userController.js")

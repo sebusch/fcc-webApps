@@ -1,0 +1,23 @@
+//- layout: title, block body
+//- optional errors = text array
+//- optional newUser boolean
+extends layout
+
+block body
+  .center-block(style="max-width: 280px; margin-top: 10px")
+    form(method="post")
+      .form-group
+        label(for="username") User Name
+        input.form-control#username(type="text" placeholder="User Name" required name="username")
+      .form-group
+        label(for="password") Password
+        input.form-control#password(type="password" placeholder="Password" required name="password")
+      if ( newUser )
+        .form-group
+          label(for="passwordVerivy") Verify Password
+          input.form-control#passwordVerify(type="password" placeholder="Verify Password" required name="passwordVerify")
+        button.btn.btn-default(type="submit") Sign Up
+      else
+        button.btn.btn-default(type="submit") Log In
+
+

@@ -1,0 +1,38 @@
+
+#messages {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+#messages h4 {
+  margin-top: 0;
+  color: inherit;
+}
+#messages > p,
+#messages > ul {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin-bottom: 2px;
+}
+#messages > p + p {
+  margin-top: 5px;
+}
+#messages > ul.success {
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #3c763d;
+
+}
+#messages > ul.info {
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  color: #31708f;
+}
+
+#messages > ul.error {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+}
+

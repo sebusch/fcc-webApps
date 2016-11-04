@@ -1,0 +1,27 @@
+//- layout: title, block body
+extends layout
+
+block body
+  .github-profile.center-block
+    img(src="/img/gh-mark-32px.png" alt="github logo")
+    br
+    p 
+      span ID: 
+      span.profile-value#profile-id
+    p
+      span Username: 
+      span.profile-value#profile-username
+    p
+      span Display Name: 
+      span.profile-value#display-name
+    p
+      span Repositories: 
+      span.profile-value#profile-repos
+
+    p
+      a.menu(href='/') Home
+      span#menu-divide |
+      a.menu(href='/logout') Logout
+
+  script(type="text/javascript", src="/js/ajax-functions.js")
+  script(type="text/javascript", src="/js/userController.js")

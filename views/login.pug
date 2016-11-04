@@ -1,0 +1,15 @@
+//- layout: title, block body
+extends layout
+
+block body
+  .login.text-center.center-block
+    img(src="/img/clementine_150.png")
+    br
+    p Clementine.js mod SEB
+    .btn-group-vertical(role="group")
+      a.btn.btn-primary#login-btn(href="/auth/github")
+        img(src="/img/github_32px.png" alt="github logo" height="18" style="padding-right: 4px") 
+        |  LOGIN WITH GITHUB
+      br
+      a.btn.btn-primary#local-login-btn(href="/auth/local") LOCAL LOGIN
+      a.btn.btn-default#local-signup-btn(href="/auth/local/new") new local account

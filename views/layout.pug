@@ -1,0 +1,15 @@
+doctype html
+//- title, block body
+html
+  head
+    title= title
+    link(href="/css/bs-callout.css", rel="stylesheet")
+    link(href="/css/bootstrap.min.css", rel="stylesheet")
+    link(href="/css/messages.css", rel="stylesheet")
+    style.
+      .container { margin: 0px auto}
+  block header
+  body
+    .container(style="margin-top: 10px")
+      != messages()
+      block body
