@@ -1,8 +1,20 @@
 header
   p Welcome, 
-    span#display-name
-    | !
+    if ( user )
+      span= user.profile.displayName
+      | !
+    else
+      span Friend!
   p
     a.menu(href='/') Home
     span#menu-divide |
-    a.menu(href='/logout') Logout
+    a.menu(href=(link || '') + '/about') About
+    span#menu-divide |
+    if ( user )
+      a.menu(href='/profile') Profile
+      span#menu-divide |
+      a.menu(href='/logout') Logout
+    else
+      a.menu(href='/login') Login or Sign up
+
+  

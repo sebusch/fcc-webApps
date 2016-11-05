@@ -14,10 +14,11 @@ block body
         li= story
       else
         li there are no user stories
-  if(examples.length != 0)
-    each example in examples
-      h3= example.heading
-      each line in example.content
-        code= line
-          br
+  if ( examples )
+    if(examples.length != 0)
+      each example in examples
+        h3= example.heading
+        each line in example.content
+          code= line
+            br
   block content

@@ -1,6 +1,8 @@
 //- layout: title, block body
 //- array pages = [ {title: ,link: }, ... ]
 extends layout
+block header
+  include header.pug
 block body
   h1= title
     small &nbsp;for freecodecamp

@@ -54,6 +54,7 @@ module.exports = function( ) {
               displayName: profile.displayName,
               publicRepos: profile._json.public_repos
             },
+            profile: { displayName: profile.displayName },
             nbrClicks: { clicks: 0 }
           } );
           newUser.save( function( err, user ) {

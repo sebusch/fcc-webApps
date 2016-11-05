@@ -1,8 +1,10 @@
 /* eslint one-var: 0 */
-require( './config/passport' )();
+
 var express = require( 'express' );
 var favicon = require( 'serve-favicon' );
 var vote = require( './routes/vote' );
+var account = require( './routes/account' );
+var api = require( './routes/api' );
 var text = require( './models/text' );
 var session = require( 'express-session' );
 var passport = require( 'passport' );
@@ -11,10 +13,10 @@ var helmet = require( 'helmet' );
 var path = require( 'path' );
 var logger = require( 'morgan' );
 var flash = require( 'connect-flash' );
-var expressSanitized = require('express-sanitize-escape');
+var expressSanitized = require( 'express-sanitize-escape' );
 
 var app = express();
-
+require( './config/passport' )();
 
 app.set( 'views', path.join( __dirname, 'views' ) );
 app.set( 'view engine', 'pug' );
@@ -26,33 +28,49 @@ app.use( bodyParser.json() );
 app.use( bodyParser.urlencoded( {
   extended: true
 } ) );
-app.use(expressSanitized.middleware());
+app.use( expressSanitized.middleware() );
 
 app.use( session( {
-  secret: 'secretClementine',
+  secret: 'biscuit is my doggie',
   resave: false,
   saveUninitialized: true
 } ) );
 
-
 app.use( passport.initialize() );
 app.use( passport.session() );
 
-// app.get( '/', function( req, res ) {
-//   res.render( 'index', {
-//     title: 'Full stack Projects',
-//     pages: text
-//   } )
-// } )
-
 app.use( flash() );
-app.use(function (req, res, next) {
-  res.locals.messages = require('express-messages')(req, res);
+app.use( function( req, res, next ) {
+  res.locals.messages = require( 'express-messages' )( req, res );
   next();
-});
+} );
+
+app.use( function( req, res, next ) {
+  res.locals.user = req.user;
+  next();
+} );
+
 
 app.use( express.static( path.join( __dirname, '/public' ) ) );
+app.use( '/api', api );
 app.use( text.vote.link, vote );
+
+app.get( '/', function( req, res ) {
+  res.render( 'index', {
+    title: 'Full stack Projects',
+    pages: text
+  } )
+} )
+app.get( '/about', function( req, res ) {
+  res.render( 'task', {
+    title: 'Full stack Projects',
+    userStories: [
+      'These apps were developed to fulfill the requirements for the backend development certificate under the curriculum developed by www.freecodecamp.com.'
+    ]
+  } )
+} );
+app.use( account );
+
 
 // catch 404 and forward to error handler
 app.use( function( req, res, next ) {

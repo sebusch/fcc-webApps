@@ -13,12 +13,19 @@ block body
     p Clementine.js mod SEB
 
   div.text-center
-    p You have clicked the button #[span(id="click-nbr")] times.
-    br
-    .btn-container
-      button.btn.btn-add(type="submit") CLICK ME!
-      button.btn.btn-delete RESET
-
+    if ( user)
+      //- updates without refresh
+      p You have clicked the button #[span(id="click-nbr") &nbsp;&nbsp;] times.
+      //- updates on refresh only
+      p You have clicked the button #{user.nbrClicks.clicks} times.
+      br
+      .btn-container
+        button.btn.btn-add(type="submit") CLICK ME!
+        button.btn.btn-delete RESET
+    else
+      p Log in for more features!
+      a.btn.btn-primary(href="/login") Log in
   script(type="text/javascript", src="/js/ajax-functions.js")
-  script(type="text/javascript", src="/js/clickController.js")
-  script(type="text/javascript", src="/js/userController.js")
+  if ( user )
+    script(type="text/javascript", src="/js/clickController.js")
+  //-script(type="text/javascript", src="/js/userController.js")
