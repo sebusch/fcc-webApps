@@ -1,10 +1,6 @@
-//- layout: title, block body
-//- optional errors = text array
-//- optional newUser boolean
-extends layout
-block header
-  p
-    a.menu(href='/') Home
+//- layout: title, and block: head, header, body
+//- localLogin: optional newUser boolean
+extends ../layout
 
 block body
   .center-block(style="max-width: 280px; margin-top: 10px")

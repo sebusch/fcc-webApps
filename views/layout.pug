@@ -1,15 +1,20 @@
 doctype html
-//- title, block body
+//- layout: title, and block: head, header, body
 html
   head
     title= title
-    link(href="/css/bs-callout.css", rel="stylesheet")
     link(href="/css/bootstrap.min.css", rel="stylesheet")
-    link(href="/css/messages.css", rel="stylesheet")
+    //- link(href="/css/messages.css", rel="stylesheet")
+    //- i combined the custom 'messages.css' into the end of bootstrap.min.css
+    block head
     style.
       .container { margin: 0px auto}
-  block header
+
+  header
+    a(href="/")
+      img(src='/favicon.ico', style="vertical-align: top; padding: 5px" alt="Home")
+    block header
   body
-    .container(style="margin-top: 10px")
+    .container
       != messages()
       block body

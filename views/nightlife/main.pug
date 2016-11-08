@@ -1,0 +1,130 @@
+//- layout: title, block header, block body
+//- header: optional: user.profile.displayName, link
+
+extends ../layout
+block head
+  style.
+    .tCell {
+      display: table-cell;
+      vertical-align: top;
+      padding: 0px 5px 5px 5px;
+      background-color: white;
+      border-radius: 4px
+    }
+    .tRow {
+      padding-left: 5px;
+      background-color: white
+    }
+    body {
+      background-color: #BCC6CC
+    }
+    .radio {
+      padding-left: 10px;
+    }
+
+block header
+  include ../header.pug
+
+block body
+  -search = lastSearch || {}
+  p Search powered by 
+    a(href='http://www.yelp.com') 
+      img(height="25px" src='/img/yelp_small.png')
+  form(method='post')
+    div.row
+      div.col-xs-4
+        div.form-group
+          label(for='term') Find: 
+          input.form-control(type='text' name='term' placeholder='e.g. dance, beer' value= search.term || '')
+      div.col-xs-4
+        div.form-group
+          label(for='location') Location: 
+          input.form-control( required type='text' name='location' placeholder='e.g. San Francisco, CA' value= search.location || '')
+      div.col-xs-4
+        div.form-group
+          label(for="sort") Sort by:
+          div.radio
+            label.radio-inline
+              input(type="radio" name="sort" value="1" checked )
+              |  distance  
+            label.radio-inline
+              input(type="radio" name="sort" value="2" checked = (search.sort == 2) ? true : false) 
+              |  rating 
+    div.row
+      div.col-xs-4
+        div.form-group
+          label(for="category") Category:
+          div.radio
+            label.radio-inline
+              input(type="radio" name="category" value="nightlife" checked )
+              |  Nightlife  
+            label.radio-inline
+              input(type="radio" name="category" value="restaurants" checked = (search.category == 'restaurants') ? true : false) 
+              |  Restaurants
+      div.col-xs-4
+        div.form-group
+          label(for="distance") Distance:
+          div.radio
+            label.radio-inline
+              input(type="radio" name="distance" value="2000" checked )
+              |  2 km  
+            label.radio-inline
+              input(type="radio" name="distance" value="5000" checked = (search.distance == '5000') ? true : false) 
+              |  5 km
+            label.radio-inline
+              input(type="radio" name="distance" value="10000" checked = (search.distance == '10000') ? true : false) 
+              |  10 km
+      div.col-xs-4
+       
+    button.btn.btn-primary(type="submit" ) Search  
+  -goingList = []
+  each business in going || []
+    - goingList.push( business._id )
+  if ( yelp )
+    div(style="display: table")
+    each business in yelp.businesses || []
+      div(style="background-color: white; margin-top: 5px; border-radius: 4px")
+        div(style="display: table-row;")
+          - categories = []
+          each category in business.categories || []
+            - categories.push( category[0] )
+          h4.tRow(style="margin-bottom: 0px;")
+            a(href=business.url)= business.name 
+            small= ' ' + categories.join(', ')
+          p.tRow(style="margin-bottom: 0px") #{business.rating} &#9733; / #{business.review_count} reviews
+            -index = goingList.indexOf( business.id )
+            -you = false
+            if ( index > -1 )
+              |  | 
+              span(id='num-' + business.id) #{going[ index ].going.length}
+              |  going 
+              if ( user )
+                each id in going[index].going
+                  if ( id == user._id.toString())
+                    -you=true
+
+            else
+              |  | 
+              span(id='num-' + business.id) 0 
+              |  going 
+            if ( user )
+              if (you)
+                button.btn.btn-danger.btn-xs.cancel(id= business.id)  Cancel 
+              else 
+                button.btn.btn-primary.btn-xs.add(id= business.id)  Add me
+            else
+              a(href='/login') Login
+          div(style="display: table-row")
+            div.tCell
+              img(src=business.image_url) 
+            div.tCell(style="min-width: 200px") Review sample: "#{business.snippet_text}"
+            div.tCell(style="min-width: 170px")     
+              each line in business.location.display_address || []
+                | #{line} #[br]
+              else
+                | no address listed
+              
+    else
+      p no business found
+  script(src='/js/common/ajax-functions.js')
+  script(src='/js/nightlife/nlController.js')

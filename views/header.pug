@@ -1,18 +1,21 @@
-header
-  p Welcome, 
+//- optional object user.profile.displayName
+//- optional object link (is a key in the arrays in text model)
+
+div(style="display: inline-block; padding-left: 5px")
+  p(style="margin-bottom: 0") Welcome, 
     if ( user )
       span= user.profile.displayName
       | !
     else
       span Friend!
-  p
-    a.menu(href='/') Home
-    span#menu-divide |
-    a.menu(href=(link || '') + '/about') About
-    span#menu-divide |
+  p(style="margin-bottom: 0")
+    a.menu(href=(link || '/')) Project home 
+    span#menu-divide | 
+    a.menu(href=(link || '') + '/about') About 
+    span#menu-divide | 
     if ( user )
-      a.menu(href='/profile') Profile
-      span#menu-divide |
+      a.menu(href='/profile') Profile 
+      span#menu-divide | 
       a.menu(href='/logout') Logout
     else
       a.menu(href='/login') Login or Sign up

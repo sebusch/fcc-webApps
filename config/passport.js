@@ -1,4 +1,5 @@
 
+var GoogleStrategy = require( 'passport-google-oauth20' ).Strategy;
 var GitHubStrategy = require( 'passport-github' ).Strategy;
 var LocalStrategy = require( 'passport-local' ).Strategy;
 var User = require( '../models/users' );
@@ -53,6 +54,39 @@ module.exports = function( ) {
               username: profile.username,
               displayName: profile.displayName,
               publicRepos: profile._json.public_repos
+            },
+            profile: { displayName: profile.displayName },
+            nbrClicks: { clicks: 0 }
+          } );
+          newUser.save( function( err, user ) {
+            if ( err ) {
+              throw err;
+            }
+            return done( null, user );
+          } );
+        }
+      } );
+    } );
+  } ) );
+  passport.use( new GoogleStrategy( {
+    clientID: configAuth.googleAuth.clientID,
+    clientSecret: configAuth.googleAuth.clientSecret,
+    callbackURL: configAuth.googleAuth.callbackURL
+  }, function( token, refreshToken, profile, done ) {
+    process.nextTick( function() {
+      User.findOne( {
+        'google.id': profile.id
+      }, function( err, user ) {
+        if ( err ) {
+          return done( err );
+        }
+        if ( user ) {
+          return done( null, user );
+        } else {
+          var newUser = new User( {
+            google: {
+              id: profile.id,
+              displayName: profile.displayName,
             },
             profile: { displayName: profile.displayName },
             nbrClicks: { clicks: 0 }

@@ -1,0 +1,28 @@
+//- layout: title, and block: head, header, body
+extends ../layout
+block head
+  link(href="/css/login.css", rel="stylesheet") 
+block body
+  .login.text-center.center-block(style="width: 200px")
+    if ( user )
+      p You are already logged in as #{user.profile.displayName}
+      .btn-group-vertical(role="group")
+        a.btn.btn-primary(href="/") Home
+        a.btn.btn-danger(href="/logout") Logout
+        
+    else
+      
+      a.btn.btn-default.btn-login(href="/auth/github")
+        img.pull-left(src="/img/gh-mark-32px.png" alt="github mark" style="height: 19px; margin-top: auto; margin-bottom: auto; margin-left: -4px") 
+        |  Sign in with GitHub 
+    
+      a.btn.btn-default.btn-login(href="/auth/google") 
+        img.pull-left(src="/img/btn_google_light_normal_ldpi.9.png" alt="google logo" style="height: 32px; margin-top: -6px; margin-bottom: -6px; margin-left: -12px;")
+        | Sign in with Google
+
+      a.btn.btn-default.btn-login(href="/auth/local") 
+        img.pull-left(src="/favicon.ico" alt="seb logo" style="height: 16px; margin-top: auto; margin-bottom: auto; margin-left: -4px; margin-right: 8px")
+        | Local login
+      a.btn.btn-default.btn-login(href="/auth/local/new") 
+        img.pull-left(src="/favicon.ico" alt="seb logo" style="height: 16px; margin-top: auto; margin-bottom: auto; margin-left: -4px; margin-right: 8px")
+        | New local account

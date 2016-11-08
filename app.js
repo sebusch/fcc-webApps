@@ -3,6 +3,7 @@
 var express = require( 'express' );
 var favicon = require( 'serve-favicon' );
 var vote = require( './routes/vote' );
+var nightlife = require( './routes/nightlife' );
 var account = require( './routes/account' );
 var api = require( './routes/api' );
 var text = require( './models/text' );
@@ -18,6 +19,7 @@ var expressSanitized = require( 'express-sanitize-escape' );
 var app = express();
 require( './config/passport' )();
 
+app.set( 'json spaces', 2 );
 app.set( 'views', path.join( __dirname, 'views' ) );
 app.set( 'view engine', 'pug' );
 app.use( favicon( path.join( __dirname, 'public', 'favicon.ico' ) ) );
@@ -54,6 +56,7 @@ app.use( function( req, res, next ) {
 app.use( express.static( path.join( __dirname, '/public' ) ) );
 app.use( '/api', api );
 app.use( text.vote.link, vote );
+app.use( text.nightlife.link, nightlife );
 
 app.get( '/', function( req, res ) {
   res.render( 'index', {

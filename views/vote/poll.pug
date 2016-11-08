@@ -1,0 +1,39 @@
+//- layout: title, and block: head, header, body
+//- header: optional: user.profile.displayName, link
+//- poll: poll object
+extends ../layout
+block header
+  include ../header.pug
+
+block body
+  
+  div
+    if ( !poll )
+      p Sorry there are no options here. Create one yourself!
+    else
+      a.twitter-share-button(href="https://twitter.com/intent/tweet?text=" + encodeURI("Vote now: "+poll.title)) Tweet
+      h3.text-center= poll.title
+      .row
+        .col-xs-6.text-right
+          p#voted-tag(style="display: none") You have voted in this poll
+          .btn-group-vertical(role="group")
+            each option, index in poll.options
+              button.btn.btn-default.btn-vote(id=index, type="button" style="white-space: normal") #{option.label} #[span.pull-right(style="padding-left: 10px") #[span(id='vote'+index) #{option.count}] votes]
+            br
+            if (!user)
+              a.btn(href='/login') Login to add an option
+            else
+              #addOptionDiv
+                button.btn.btn-info#addOption(type="button") Add option...            
+              if ( user._id.toString() === poll.owner.toString() )
+                form(method='post' action=link + '/' + poll.link + '/delete' onsubmit="return confirm('Do you really want to delete this poll?');")
+                  input(type="hidden" value=poll.link name="link")
+                  button.delete.btn.btn-danger(type="submit") Delete this poll
+        .col-xs-6
+          div.center-block.text-center#myPieChart
+
+    script(type="text/javascript" src="https://www.gstatic.com/charts/loader.js")
+    script(type="text/javascript", src="/js/common/ajax-functions.js")
+    script(type="text/javascript", src="/js/vote/voteController.js")
+    script(type="text/javascript", src="/js/vote/googleChart.js")  
+    script(type="text/javascript", src="/js/common/twitter.js")   

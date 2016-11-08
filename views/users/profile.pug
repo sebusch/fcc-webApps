@@ -1,5 +1,5 @@
-//- layout: title, block body
-extends layout
+//- layout: title, and block: head, header, body
+extends ../layout
 
 block body
   .github-profile.center-block
@@ -23,5 +23,5 @@ block body
       span#menu-divide |
       a.menu(href='/logout') Logout
 
-  script(type="text/javascript", src="/js/ajax-functions.js")
-  script(type="text/javascript", src="/js/userController.js")
+  script(type="text/javascript", src="/js/common/ajax-functions.js")
+  script(type="text/javascript", src="/js/users/userController.js")

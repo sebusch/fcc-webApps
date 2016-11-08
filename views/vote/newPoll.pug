@@ -1,0 +1,23 @@
+//- layout: title, and block: head, header, body
+//- header: optional: user.profile.displayName, link
+
+extends ../layout
+block header
+  include ../header.pug
+
+block body
+  .center-block(style="max-width: 280px; margin-top: 10px")
+    form(method="post")
+      .form-group
+        label(for="title") Poll title
+        input.form-control#title(type="text" placeholder="Poll title" required autofocus name="title")
+      .form-group#optionGroup
+        label(for="option") Options
+        input.form-control(type="text" placeholder="Option" required name="option")
+        input.form-control(type="text" placeholder="Option" required name="option")
+      button.btn.btn-default#addOption(type="button") Add option
+      button.btn.btn-default(type="submit") Add poll
+      
+
+  script(type="text/javascript", src="/js/common/ajax-functions.js")
+  script(type="text/javascript", src="/js/vote/newPollController.js")

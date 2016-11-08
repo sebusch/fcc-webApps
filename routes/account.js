@@ -10,7 +10,7 @@ router.get( '/login', function( req, res ) {
   if ( req.headers.referer ) {
     req.session.returnTo = req.headers.referer
   }
-  res.render( 'login', {
+  res.render( 'users/login', {
     title: 'login'
   } );
 } );
@@ -19,14 +19,13 @@ router.get( '/logout', function( req, res ) {
   req.logout();
   if ( req.headers.referer ) {
     res.redirect( req.headers.referer );
-  }
-  else {
+  } else {
     res.redirect( '/' );
   }
 } );
 
 router.get( '/profile', ensureLoggedIn( '/login' ), function( req, res ) {
-  res.render( 'profile', {
+  res.render( 'users/profile', {
     title: 'profile'
   } );
 } );
@@ -34,12 +33,12 @@ router.get( '/profile', ensureLoggedIn( '/login' ), function( req, res ) {
 router.route( '/auth/local/:new?' )
   .get( ensureLoggedOut( '/login' ), function( req, res ) {
     if ( req.params.new == 'new' ) {
-      res.render( 'localLogin', {
+      res.render( 'users/localLogin', {
         title: 'Sign Up',
         newUser: true
       } );
     } else {
-      res.render( 'localLogin', {
+      res.render( 'users/localLogin', {
         title: 'login'
       } );
     }
@@ -53,6 +52,13 @@ router.route( '/auth/local/:new?' )
 router.get( '/auth/github', passport.authenticate( 'github' ) );
 
 router.get( '/auth/github/callback', passport.authenticate( 'github', {
+  successReturnToOrRedirect: '/',
+  failureRedirect: '/login',
+  failureFlash: true
+} ) );
+router.get( '/auth/google', passport.authenticate( 'google', { scope: ['profile'] } ) );
+
+router.get( '/auth/google/callback', passport.authenticate( 'google', {
   successReturnToOrRedirect: '/',
   failureRedirect: '/login',
   failureFlash: true
