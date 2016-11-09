@@ -3,7 +3,7 @@ var express = require( 'express' );
 var router = express.Router();
 var Nightlife = require( '../models/nightlife' );
 var renderParams = require( '../models/text' ).nightlife;
-var ensureLoggedIn = require( 'connect-ensure-login' ).ensureLoggedIn;
+//var ensureLoggedIn = require( 'connect-ensure-login' ).ensureLoggedIn;
 
 var Yelp = require( 'yelp' );
 
@@ -19,7 +19,7 @@ router.get( '/about', function( req, res ) {
   res.render( 'task', renderParams )
 } );
 
-router.post( '/api/add/:id', ensureLoggedIn( '/login' ), function( req, res, next ) {
+router.post( '/api/add/:id', checkLoggedIn, function( req, res, next ) {
   Nightlife.new( req.params.id, 'Name', res.locals.user._id, function( err, data ) {
     if ( err ) {
       next( err )
@@ -33,7 +33,7 @@ router.post( '/api/add/:id', ensureLoggedIn( '/login' ), function( req, res, nex
     } )
   } )
 } )
-router.post( '/api/cancel/:id', ensureLoggedIn( '/login' ), function( req, res, next ) {
+router.post( '/api/cancel/:id', checkLoggedIn, function( req, res, next ) {
   Nightlife.notGoing( req.params.id, res.locals.user._id, function( err, data ) {
     if ( err ) {
       next( err )
@@ -47,6 +47,14 @@ router.post( '/api/cancel/:id', ensureLoggedIn( '/login' ), function( req, res, 
     } )
   } )
 } )
+function checkLoggedIn( req, res, next ) {
+  if ( !req.user ) {
+    req.flash( 'error', 'You must be logged in to do that.' )
+    res.redirect( renderParams.link );
+  } else {
+    next()
+  }
+}
 
 router.get( '/', function( req, res, next ) {
   res.locals.yelp = req.session.yelpResults;

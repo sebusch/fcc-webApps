@@ -2,10 +2,7 @@
 
 var express = require( 'express' );
 var favicon = require( 'serve-favicon' );
-var vote = require( './routes/vote' );
-var nightlife = require( './routes/nightlife' );
-var account = require( './routes/account' );
-var api = require( './routes/api' );
+
 var text = require( './models/text' );
 var session = require( 'express-session' );
 var passport = require( 'passport' );
@@ -17,6 +14,13 @@ var flash = require( 'connect-flash' );
 var expressSanitized = require( 'express-sanitize-escape' );
 
 var app = express();
+
+var vote = require( './routes/vote' );
+var nightlife = require( './routes/nightlife' );
+var stocks = require( './routes/stocks' );
+var account = require( './routes/account' );
+var api = require( './routes/api' );
+
 require( './config/passport' )();
 
 app.set( 'json spaces', 2 );
@@ -57,6 +61,7 @@ app.use( express.static( path.join( __dirname, '/public' ) ) );
 app.use( '/api', api );
 app.use( text.vote.link, vote );
 app.use( text.nightlife.link, nightlife );
+app.use( text.stocks.link, stocks );
 
 app.get( '/', function( req, res ) {
   res.render( 'index', {

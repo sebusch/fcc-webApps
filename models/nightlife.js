@@ -44,6 +44,6 @@ module.exports = Nightlife;
 // {
 //   createdAt: new Date()
 //   yelpID: businessID from yelp
-//   name: business name from yelp
+//   name: business name from yelp -- not yet implemented
 //   user: user._id going
 // }

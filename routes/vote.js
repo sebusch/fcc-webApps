@@ -2,16 +2,11 @@
 var express = require( 'express' );
 var router = express.Router();
 var Poll = require( '../models/polls' );
-//var ClickHandler = require( '../models/clickHandler' );
 var renderParams = require( '../models/text' ).vote;
-//var passport = require( 'passport' );
-//var User = require( '../models/users' );
 var ensureLoggedIn = require( 'connect-ensure-login' ).ensureLoggedIn;
 var _ = require( 'lodash' );
 
-
-
-router.get( '/', /*ensureLoggedIn( '/login' ), */function( req, res, next ) {
+router.get( '/', function( req, res, next ) {
   Poll.getAll( function( err, docs ) {
     if ( err ) {
       next( err );
@@ -19,7 +14,6 @@ router.get( '/', /*ensureLoggedIn( '/login' ), */function( req, res, next ) {
     renderParams.polls = docs;
     res.render( 'vote/main', renderParams )
   } )
-
 } );
 
 router.get( '/manage', ensureLoggedIn( '/login' ), function( req, res, next ) {
@@ -31,7 +25,6 @@ router.get( '/manage', ensureLoggedIn( '/login' ), function( req, res, next ) {
     res.locals.manage = true;
     res.render( 'vote/main', renderParams )
   } )
-
 } );
 
 router.route( '/new' )
@@ -41,6 +34,7 @@ router.route( '/new' )
   .post( ensureLoggedIn( '/login'), addPoll, function( req, res, next ) {
     res.redirect( renderParams.link );
   } )
+
 router.get( '/about', function( req, res ) {
   res.render( 'task', renderParams )
 } );
@@ -57,9 +51,7 @@ router.post( '/:link/delete', ensureLoggedIn( '/login' ), function( req, res, ne
     res.locals.manage = true;
     res.redirect( renderParams.link + '/manage' );
   } )
-
 } )
-
 
 router.route( '/:link' )
   .get( function( req, res, next ) {
@@ -78,7 +70,6 @@ router.route( '/:link' )
     for ( var i = 0; i < req.session.poll.options.length; i++ ) {
       pollOptions.push( req.session.poll.options[ i ].label );
     }
-        
     if ( pollOptions.indexOf( req.body.new ) == -1 ) {
       Poll.addOption( req.params.link, req.body.new, function( err, doc ) {
         if ( err ) {
@@ -111,7 +102,7 @@ function addPoll( req, res, next ) {
     options: []
   }
   var uniqOptions = _.uniq( req.body.option );
-  if( uniqOptions.length < 2 ) {
+  if ( uniqOptions.length < 2 ) {
     req.flash( 'error', 'You must have 2 or more unique options' )
     res.redirect( renderParams.link + '/new' );
   } else {

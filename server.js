@@ -21,7 +21,8 @@ app.set( 'port', port );
  */
 
 var server = http.createServer( app );
-
+var expressWs = require('express-ws')(app, server);
+module.exports = expressWs;
 /**
  * Listen on provided port, on all network interfaces.
  */

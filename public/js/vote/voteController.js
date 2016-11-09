@@ -1,8 +1,6 @@
-/* global ajaxFunctions, updateChart, googleLoaded, drawChart */
+/* global ajaxFunctions, updateChart, googleLoaded, drawChart, google */
 var poll = {};
 ( function() {
-  //var clickNbr = document.querySelector( '#click-nbr' );
-  //var apiUrl = appUrl + '/api/vote/:id';
   var apiUrl = '/api' + window.location.pathname
   var buttons;
   function updateVotes( data ) {
@@ -11,10 +9,9 @@ var poll = {};
     for ( var i = 0; i < poll.options.length; i++ ) {
       document.querySelector( '#vote' + i ).innerHTML = poll.options[ i ].count;
     }
-  //clickNbr.innerHTML = poll.nbrClicks.clicks;
   }
 
-  ajaxFunctions.ready( function(){
+  ajaxFunctions.ready( function() {
 
     ajaxFunctions.ajaxRequest( 'GET', apiUrl + '/orig', function( data ) {
       poll = JSON.parse( data );
@@ -29,10 +26,10 @@ var poll = {};
 
     for ( var i = 0; i < buttons.length; ++i ) {
       buttons[ i ].addEventListener( 'click', function() {
-        document.querySelector('#voted-tag').setAttribute( 'style','display: visible' )
+        document.querySelector( '#voted-tag' ).setAttribute( 'style', 'display: visible' )
         ajaxFunctions.ajaxRequest( 'POST', apiUrl + '/' + this.id, updateVotes );
-        for (var j = 0; j < buttons.length; j++) {
-          buttons[j].setAttribute('disabled','disabled');
+        for ( var j = 0; j < buttons.length; j++ ) {
+          buttons[ j ].setAttribute( 'disabled', 'disabled' );
         }
       } );
     }
@@ -60,7 +57,7 @@ var poll = {};
         div.innerHTML = '';
         div.appendChild( formEl );
         formEl.appendChild( inputEl );
-        formEl.appendChild( document.createElement('br') );
+        formEl.appendChild( document.createElement( 'br' ) );
         formEl.appendChild( buttonSubmit );
 
       } );

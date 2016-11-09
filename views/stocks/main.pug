@@ -1,0 +1,13 @@
+//- layout: title, block header, block body
+//- header: optional: user.profile.displayName, link
+//- this: user.nbrClicks.clicks
+//- polls
+extends ../layout
+block header
+  include ../header.pug
+
+block body
+  button.btn.btn-primary Websocket test
+
+  script(type="text/javascript", src="/js/common/ajax-functions.js")
+  script(type="text/javascript", src="/js/stocks/stockController.js")
