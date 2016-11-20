@@ -6,8 +6,9 @@
 
 require( 'dotenv' ).config();
 
-var app = require( './app' );
-var http = require( 'http' );
+var app = require( './app' ).app;
+var server = require('./app').server;
+//var http = require( 'http' );
 
 /**
  * Get port from environment and store in Express.
@@ -20,9 +21,8 @@ app.set( 'port', port );
  * Create HTTP server.
  */
 
-var server = http.createServer( app );
-var expressWs = require('express-ws')(app, server);
-module.exports = expressWs;
+
+
 /**
  * Listen on provided port, on all network interfaces.
  */

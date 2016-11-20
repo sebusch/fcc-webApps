@@ -7,7 +7,15 @@ block header
   include ../header.pug
 
 block body
-  button.btn.btn-primary Websocket test
+  div.center-block.text-center#myChart
+
+  div#stockList
+    div.col-xs-3  
+      form.form-inline(action='' onsubmit="formHandler(this); return false")
+        input.form-control#newStock(style='width: 120px',type='text',name="newStock",required,placeholder='Stock symbol')
+        button.btn.btn-default#formSubmit(type='submit') Add Stock
 
   script(type="text/javascript", src="/js/common/ajax-functions.js")
+  script(type="text/javascript", src="https://code.highcharts.com/stock/highstock.js") 
+  script(type="text/javascript", src="https://code.highcharts.com/stock/modules/exporting.js") 
   script(type="text/javascript", src="/js/stocks/stockController.js")

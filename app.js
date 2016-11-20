@@ -1,5 +1,5 @@
 /* eslint one-var: 0 */
-
+var http = require( 'http' );
 var express = require( 'express' );
 var favicon = require( 'serve-favicon' );
 
@@ -14,10 +14,14 @@ var flash = require( 'connect-flash' );
 var expressSanitized = require( 'express-sanitize-escape' );
 
 var app = express();
+var server = http.createServer( app );
+var expressWs = require( 'express-ws' )( app, server );
+
 
 var vote = require( './routes/vote' );
 var nightlife = require( './routes/nightlife' );
 var stocks = require( './routes/stocks' );
+var book = require( './routes/book' );
 var account = require( './routes/account' );
 var api = require( './routes/api' );
 
@@ -56,12 +60,33 @@ app.use( function( req, res, next ) {
   next();
 } );
 
+app.use( function( req, res, next ) {
+
+  if ( req.ws ) {
+    // console.log( req.ws.upgradeReq.sessionID )
+    // console.log( req.ws.upgradeReq.originalUrl )
+    req.wss = expressWs.getWss();
+  }
+  next()
+} )
+// expressWs.getWss().on( 'connection', function( socket ) {
+//   console.log( 'connection' + socket.upgradeReq.originalUrl )
+//   socket.on( 'open', function( ) {
+//     console.log( 'open' + socket.upgradeReq.sessionID );
+//   } )
+//   socket.on( 'message', function( data ) {
+//     console.log( 'message:' + socket.upgradeReq.sessionID + ':' + data );
+//   } )
+// } )
+
 
 app.use( express.static( path.join( __dirname, '/public' ) ) );
+
 app.use( '/api', api );
 app.use( text.vote.link, vote );
 app.use( text.nightlife.link, nightlife );
 app.use( text.stocks.link, stocks );
+app.use( text.book.link, book );
 
 app.get( '/', function( req, res ) {
   res.render( 'index', {
@@ -113,4 +138,4 @@ app.use( function( err, req, res, next ) {
   } );
 } );
 
-module.exports = app;
+module.exports = { app: app, server: server };
