@@ -2,7 +2,7 @@
 var formHandler;
 ( function() {
   var path = window.location.host + window.location.pathname;
-  var socket = new WebSocket( 'ws://' + path );
+  var socket = new WebSocket( 'wss://' + path );
   var socketOpen = false;
   var seriesOptions = [];
   var chart;
