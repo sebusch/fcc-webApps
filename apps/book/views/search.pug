@@ -1,0 +1,40 @@
+//- layout: title, block header, block body
+//- header: optional: user.profile.displayName, link
+//- this: results opt.
+extends ../../../common/views/layout
+block header
+  include ../../../common/views/header.pug
+
+block body
+  form.form-inline(method='POST')
+    input.form-control#query(type='text',name="query" required pattern="([A-z0-9À-ž ]){1,}",placeholder='Search' oninvalid="this.setCustomValidity('Only letter, numbers, and spaces accepted')") 
+    button.btn.btn-default(type='submit') Search
+  if ( results )
+    if (searchTerm)
+      p Results for search term: #{searchTerm}
+    if (results.error)
+      p.alert.alert-danger Error searching
+    else
+      div#results
+        p Select the books to add and click the button below:
+        form(method='POST')
+          button.btn.btn-default(type='submit') Add selection to 'My Books'
+          each result in results
+            div.panel.panel-default
+              div.panel-body
+                div(style="display: table-row")
+                  div(style="display: table-cell; vertical-align: middle;")
+                    input(type="checkbox" name="bookID" value=result.id)
+                  if (result.cover)
+                    if (result.cover.smallThumbnail)
+                      img(style="display: table-cell; height: 100px; padding-left: 10px;" src= result.cover.smallThumbnail )
+                  div(style="display: table-cell; vertical-align: top; padding-left: 10px") 
+                    h3(style="margin-top: 0px")= result.title
+                      if ( result.subtitle )
+                        br
+                        small= result.subtitle
+                    if (result.authors)
+                      p By: #{result.authors.join( ', ' )}
+
+  //-script(type="text/javascript", src="/js/ajax-functions.js")
+  //-script(type="text/javascript", src="add.js")

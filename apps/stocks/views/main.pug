@@ -1,0 +1,21 @@
+//- layout: title, block header, block body
+//- header: optional: user.profile.displayName, link
+//- this: user.nbrClicks.clicks
+//- polls
+extends ../../../common/views/layout
+block header
+  include ../../../common/views/header.pug
+
+block body
+  div.center-block.text-center#myChart
+
+  div#stockList
+    div.col-xs-3  
+      form.form-inline(action='' onsubmit="formHandler(this); return false")
+        input.form-control#newStock(style='width: 120px',type='text',name="newStock",required,placeholder='Stock symbol')
+        button.btn.btn-default#formSubmit(type='submit') Add Stock
+
+  script(type="text/javascript", src="/js/ajax-functions.js")
+  script(type="text/javascript", src="https://code.highcharts.com/stock/highstock.js") 
+  script(type="text/javascript", src="https://code.highcharts.com/stock/modules/exporting.js") 
+  script(type="text/javascript", src="stockController.js")

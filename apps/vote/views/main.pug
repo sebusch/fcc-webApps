@@ -1,0 +1,41 @@
+//- layout: title, block header, block body
+//- header: optional: user.profile.displayName, link
+//- this: user.nbrClicks.clicks
+//- polls
+extends ../../../common/views/layout
+block header
+  include ../../../common/views/header.pug
+
+block body
+  div.text-center
+    if ( !polls )
+      p Sorry there are no polls. Create one yourself!
+    else
+      if( user )
+        a(href=link+'/new') Create a poll 
+        | | 
+        if ( !manage ) 
+          a(href=link+'/manage') Manage my polls 
+        else
+          a(href=link) View all polls 
+      else
+        a(href='/login') Login 
+        | to create or manage polls
+      if ( manage )
+        ul.list-group
+          each poll in polls
+            li.list-group-item= poll.title
+              form.form-inline.pull-right(style="margin-top: -7px" method='post' action=link + '/' + poll.link + '/delete' onsubmit="return confirm('Do you really want to delete this poll?');")
+                a.btn.btn-primary(href=link + '/' + poll.link ) View
+                |  
+                input(type="hidden" value=poll.link name="link")
+                button.delete.btn.btn-danger(type="submit") Delete
+      else
+        .list-group
+          each poll in polls
+            a.list-group-item(href=link + '/' + poll.link)= poll.title
+
+            
+  if (manage)
+    script(type="text/javascript", src="/js/ajax-functions.js")
+    script(type="text/javascript", src="manageController.js")
