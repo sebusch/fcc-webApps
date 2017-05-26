@@ -9,6 +9,9 @@ block body
   form.form-inline(method='POST')
     input.form-control#query(type='text',name="query" required pattern="([A-z0-9À-ž ]){1,}",placeholder='Search' oninvalid="this.setCustomValidity('Only letter, numbers, and spaces accepted')") 
     button.btn.btn-default(type='submit') Search
+    span  Search powered by 
+      a(href='http://www.goodreads.com') 
+        img(height="25px" src='/img/goodreads_logo.png')
   if ( results )
     if (searchTerm)
       p Results for search term: #{searchTerm}
@@ -28,6 +31,8 @@ block body
                   if (result.cover)
                     if (result.cover.smallThumbnail)
                       img(style="display: table-cell; height: 100px; padding-left: 10px;" src= result.cover.smallThumbnail )
+                    else if (result.cover.thumbnail)
+                      img(style="display: table-cell; height: 100px; padding-left: 10px;" src= result.cover.thumbnail )
                   div(style="display: table-cell; vertical-align: top; padding-left: 10px") 
                     h3(style="margin-top: 0px")= result.title
                       if ( result.subtitle )
@@ -35,6 +40,9 @@ block body
                         small= result.subtitle
                     if (result.authors)
                       p By: #{result.authors.join( ', ' )}
+                    if (result.info)
+                      p= result.info
+                        a(href="http://www.goodreads.com/book/show/" + result.id)  View on Goodreads
 
   //-script(type="text/javascript", src="/js/ajax-functions.js")
   //-script(type="text/javascript", src="add.js")

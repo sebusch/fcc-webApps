@@ -21,10 +21,6 @@ router.get( '/', function( req, res ) {
   res.render( viewPath + '/main', renderParams )
 } )
 
-// router.get( '/add', function( req, res ) {
-//   res.render( viewPath + '/add', renderParams )
-// } )
-
 router.route( '/add' )
   .get( function( req, res ) {
     res.render( viewPath + '/search', renderParams )
@@ -34,8 +30,8 @@ router.route( '/add' )
       console.log( req.body.query )
       delete req.session.results;
       res.locals.searchTerm = req.body.query;
-      search( req.body.query, function( resp ) {
-        res.locals.results = format( resp );
+      searchGR( req.body.query, function( resp ) {
+        res.locals.results = formatGR( resp );
         req.session.results = res.locals.results;
         res.render( viewPath + '/search', renderParams )
       } )
@@ -62,7 +58,8 @@ router.route( '/add' )
         }
         res.locals.results = savedBooks;
         req.flash( 'success', 'Books saved' )
-        res.render( viewPath + '/search', renderParams )
+        res.json( savedBooks )
+//        res.render( viewPath + '/search', renderParams )
       }
     }
   } )
@@ -73,18 +70,6 @@ router.get( '/test', function( req, res ) {
   } )
 } )
 
-router.get( '/api/search', function( req, res ) {
-
-  // searchGR( req.query.q, function( resp ) {
-  //   res.json( formatGR( resp ) )
-  // } )
-
-  search( req.query.q, function( resp ) {
-    res.json( format( resp ) )
-  } )
-
-} )
-
 // catch 404 and forward to error handler
 router.use( function( req, res, next ) {
   var err = new Error( 'Not Found' );
@@ -93,47 +78,6 @@ router.use( function( req, res, next ) {
 } );
 
 module.exports = router;
-
-function search( query, callback ) {
-  var url = 'https://www.googleapis.com/books/v1/volumes?projection=lite&key=' +
-    process.env.GOOGLE_API_KEY +
-    '&q=' + query;
-  https.get( url, ( resp ) => {
-    var data = '';
-    resp.on( 'data', ( d ) => {
-      data += d.toString();
-    } );
-    resp.on( 'end', ( ) => {
-      var response = JSON.parse( data );
-      callback( response );
-    } );
-  } )
-
-}
-function format( resp ) {
-  if ( resp.error ) {
-    console.log( resp )
-    return resp;
-  } else if ( !resp.items ) {
-    return {
-      error: 'No results found'
-    };
-  } else {
-    var titles = [];
-    for ( var i = 0; i < resp.items.length; i++ ) {
-      var obj = resp.items[ i ].volumeInfo;
-      titles.push( {
-        id: resp.items[ i ].id,
-        title: obj.title,
-        subtitle: obj.subtitle,
-        authors: obj.authors,
-        cover: obj.imageLinks,
-        description: obj.description
-      } )
-    }
-    return titles;
-  }
-}
 
 function searchGR( query, callback ) {
   var url = 'https://www.goodreads.com/search/index.xml?key=' +
@@ -172,12 +116,16 @@ function formatGR( obj ) {
       authors.push( book.best_book[ 0 ].author[ j ].name[ 0 ] );
     }
     titles.push( {
-      id: book.id[ 0 ],
+      id: book.best_book[ 0 ].id[ 0 ],
       title: book.best_book[ 0 ].title[ 0 ],
       authors: authors,
       cover: {
         thumbnail: book.best_book[ 0 ].image_url[ 0 ]
-      }
+      },
+      info: book.average_rating[ 0 ] + "/5 avg rating \u2014 " + 
+        book.ratings_count[ 0 ] + " ratings \u2014 published " + 
+        book.original_publication_year[ 0 ] +
+        " \u2014 " + book.books_count[ 0 ] + " editions"
     } )
 
   }

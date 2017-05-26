@@ -116,8 +116,33 @@ app.get( '/about', function( req, res ) {
     ]
   } )
 } );
-app.use( account );
 
+
+
+///////////////////////////////
+//
+// glitch.com workaround to download file (e.g. image or favicon)
+// also: to view supersecret terminal:
+//   From your web browser's developer console: type application.console() 
+// (ctrl-/) to toggle block comment
+// use http or https depending.
+//
+// var writeName = "common/public/img/goodreads_logo.png";
+// var fileLocation = "https://logosinside.com/uploads/posts/2016-08/medium/goodreads-logo.png";
+// var fs = require('fs');
+// var https = require('https')
+
+// app.get('/download', function(req, res) {
+//   var file = fs.createWriteStream(writeName);
+//   var request = https.get(fileLocation, function(response) {
+//     response.pipe(file);
+//   });
+//   res.send('ok')
+// });
+//
+///////////////////////
+
+app.use( account );
 
 // catch 404 and forward to error handler
 app.use( function( req, res, next ) {
